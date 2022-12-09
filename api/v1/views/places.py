@@ -11,7 +11,7 @@ from models import storage
 @app_views.route('/cities', methods=['GET'], strict_slashes=False)
 @app_views.route('/cities/<city_id>', methods=['GET'],
                  strict_slashes=False)
-def retrieve_city(city_id=None, place_id=None):
+def retrieve_city(city_id=None):
     """ Retrieves the list of all cities or just one City """
     if city_id is None:
         cities = [city.to_dict() for city in storage.all("City").values()]
