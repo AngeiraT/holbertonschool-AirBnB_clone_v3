@@ -14,23 +14,21 @@ from models import storage
 def retrieve_city(city_id=None, place_id=None):
     """ Retrieves the list of all cities or just one City """
     if city_id is None:
-        cities = [city.to_dict() for city
-                in storage.all("City").values()]
+        cities = [city.to_dict() for city in storage.all("City").values()]
         return jsonify(cities)
     city = storage.get("City", city_id)
     if city is None:
         abort(404)
     return jsonify(city.to_dict())
-    
-    
+
+
 @app_views.route('/places', methods=['GET'], strict_slashes=False)
 @app_views.route('/places/<place_id>', methods=['GET'],
                  strict_slashes=False)
 def retrieve_place(place_id=None):
     """ Retrieves the list of all places or just one Place """
     if place_id is None:
-        places = [place.to_dict() for place
-                in storage.all("Place").values()]
+        places = [place.to_dict() for place in storage.all("Place").values()]
         return jsonify(places)
     place = storage.get("Place", place_id)
     if place is None:
