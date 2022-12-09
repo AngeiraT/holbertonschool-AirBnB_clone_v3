@@ -16,7 +16,7 @@ def retrieve_user(user_id=None):
         users = [user.to_dict() for user
                 in storage.all("User").values()]
         return jsonify(users)
-    user = storage.get("Amenity", user_id)
+    user = storage.get("User", user_id)
     if user is None:
         abort(404)
     return jsonify(user.to_dict())
