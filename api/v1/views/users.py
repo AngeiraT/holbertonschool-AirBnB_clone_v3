@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ Users view """
 
 from flask import jsonify, abort, request
@@ -7,54 +8,56 @@ from models import storage
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-@app_views.route('/users/<amenity_id>', methods=['GET'],
+@app_views.route('/users/<user_id>', methods=['GET'],
                  strict_slashes=False)
-def retrieve_amenity(amenity_id=None):
-    """ Retrieves the list of all Amenities or just one Amenity """
-    if amenity_id is None:
-        amenities = [amenity.to_dict() for amenity
-                     in storage.all("Amenity").values()]
-        return jsonify(amenities)
-    amenity = storage.get("Amenity", amenity_id)
-    if amenity is None:
+def retrieve_user (user_id=None):
+    """ Retrieves the list of all Users or just one User """
+    if user_id is None:
+        users = [user.to_dict() for user
+                     in storage.all("User").values()]
+        return jsonify(users)
+    user = storage.get("Amenity", user_id)
+    if user is None:
         abort(404)
-    return jsonify(amenity.to_dict())
+    return jsonify(user.to_dict())
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
+@app_views.route('/users/<user_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete_amenity(amenity_id=None):
-    """ delete an Amenity """
-    amenity = storage.get("Amenity", amenity_id)
-    if amenity is None:
+def delete_user(user_id=None):
+    """ delete an User """
+    user = storage.get("User", user_id)
+    if user is None:
         abort(404)
-    amenity.delete()
+    user.delete()
     storage.save()
     return jsonify({})
 
 
-@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
-def create_amenity():
-    """ create an Amenity """
+@app_views.route('/users', methods=['POST'], strict_slashes=False)
+def create_user():
+    """ create a User """
     try:
         req = request.get_json()
     except:
         req = None
     if req is None:
         abort(400, {'Not a JSON'})
-    if 'name' not in req:
-        abort(400, {'Missing name'})
-    amenity = Amenity(**req)
-    amenity.save()
-    return amenity.to_dict(), 201
+    if 'email' not in req:
+        abort(400, {'Missing email'})
+    if 'password' not in req:
+        abort(400, {'Missing password'})
+    user = User(**req)
+    user.save()
+    return user.to_dict(), 201
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
+@app_views.route('/users/<user_id>', methods=['PUT'],
                  strict_slashes=False)
-def update_amenity(amenity_id=None):
-    """ update an Amenity """
-    amenity = storage.get("Amenity", amenity_id)
-    if amenity is None:
+def update_user(user_id=None):
+    """ update an User """
+    user = storage.get("User", user_id)
+    if user is None:
         abort(404)
     try:
         req = request.get_json()
@@ -63,7 +66,7 @@ def update_amenity(amenity_id=None):
     if req is None:
         abort(400, {'Not a JSON'})
     for key, val in req.items():
-        if key not in ('id', 'created_at', 'updates_at'):
-            setattr(amenity, key, val)
-    amenity.save()
-    return amenity.to_dict()
+        if key not in ('id', 'email', 'created_at', 'updates_at'):
+            setattr(user, key, val)
+    user.save()
+    return user.to_dict()
