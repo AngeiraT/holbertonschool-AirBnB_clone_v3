@@ -50,6 +50,7 @@ def delete_place(place_id=None):
 
 @app_views.route('/cities', methods=['POST'], strict_slashes=False)
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
+
 def create_place():
     """ create a Place """
     try:
