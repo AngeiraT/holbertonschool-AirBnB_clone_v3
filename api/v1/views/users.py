@@ -14,7 +14,7 @@ def retrieve_user(user_id=None):
     """ Retrieves the list of all Users or just one User """
     if user_id is None:
         users = [user.to_dict() for user
-                    in storage.all("User").values()]
+                in storage.all("User").values()]
         return jsonify(users)
     user = storage.get("Amenity", user_id)
     if user is None:
