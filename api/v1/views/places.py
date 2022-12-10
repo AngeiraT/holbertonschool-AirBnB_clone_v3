@@ -57,6 +57,10 @@ def place_post(city_id=None):
     city_objs = storage.get(City, city_id)
     user_info = storage.get(User, dict_body['user_id'])
 
+    if city_objs is None:
+        abort(404)
+    if user_info is None:
+        abort(404)    
     if city_objs and user_info:
         new_place = Place(**dict_body)
         new_place.city_id = city_objs.id
