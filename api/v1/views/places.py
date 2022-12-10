@@ -30,16 +30,17 @@ def place_by_id(place_id=None):
         abort(404)
     return jsonify(place.to_dict())
 
+
 @app_views.route('/places/<place_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_place(place_id=None):
     """Deletes a Place object"""
-    place_objs = storage.get(Place, place_id)
-    if place_objs:
-        storage.delete(place_objs)
-        storage.save()
-        return make_response(jsonify({}), 200)
-    abort(404)
+    place = storage.get("Place", place_id)
+    if place is None:
+        abort(404)
+    place.delete()
+    storage.save()
+    return (jsonify({}))
 
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
