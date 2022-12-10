@@ -49,6 +49,7 @@ def post_state():
     state.save()
     return make_response(jsonify(state.to_dict()), 201)
 
+
 @app_views.route('/states/<string:state_id>', methods=['PUT'],
                  strict_slashes=False)
 def put_state(state_id):
