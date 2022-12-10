@@ -67,7 +67,6 @@ def place_post(city_id=None):
         storage.new(new_place)
         storage.save()
         return make_response(jsonify(new_place.to_dict()), 201)
-    abort(404)
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'],
