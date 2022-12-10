@@ -74,6 +74,8 @@ def place_put(place_id=None):
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     dict_body = request.get_json()
     place_obj = storage.get(Place, place_id)
+    if place_obj is None:
+        abort(404)
     if place_obj:
         for key, value in dict_body.items():
             if key != "id" and key != "created_at" and key != "updated_at"\
@@ -81,5 +83,3 @@ def place_put(place_id=None):
                 setattr(place_obj, key, value)
         storage.save()
         return make_response(jsonify(place_obj.to_dict()), 200)
-    else:
-        return abort(404)
