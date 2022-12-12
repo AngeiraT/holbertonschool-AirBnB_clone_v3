@@ -35,10 +35,9 @@ def place_amenity_delete(place_id, amenity_id):
         abort(404)
     if amenity not in place.amenities:
         abort(404)
-    amenity_dict = {}
-    place.amenity_ids.remove(amenity)
-    place.save()
-    return jsonify(amenity.to_dict), 200
+    place.amenities.delete(amenity)
+    storage.save()
+    return {}
 
 
 @app_views.route('/places/<string:place_id>/amenities/<string:amenity_id>',
@@ -51,6 +50,6 @@ def place_amenity_post(place_id, amenity_id):
         abort(404)
     if amenity in place.amenities:
         return jsonify(amenity.to_dict())
-    place.amenity_ids.append(amenity)
+    place.amenities.append(amenity)
     place.save()
     return make_response(jsonify(amenity.to_dict()), 201)
